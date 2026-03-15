@@ -1,0 +1,121 @@
+﻿<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8" />
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+  <title>Отчет — Лабораторная работа № 8</title>
+  <style>
+    body { font-family: "Times New Roman", serif; font-size: 12pt; line-height: 1.35; }
+    h1 { font-size: 16pt; margin: 0 0 10pt; }
+    h2 { font-size: 14pt; margin: 14pt 0 6pt; }
+    h3 { font-size: 12.5pt; margin: 10pt 0 4pt; }
+    .muted { color: #555; }
+    .center { text-align: center; }
+    .right { text-align: right; }
+    .pagebreak { page-break-after: always; }
+    table { border-collapse: collapse; width: 100%; }
+    th, td { border: 1px solid #000; padding: 6pt 8pt; vertical-align: top; }
+    th { background: #f2f2f2; }
+    code { font-family: "Consolas", monospace; font-size: 11pt; }
+    .kv { width: 100%; margin: 0; }
+    .kv td { border: 0; padding: 2pt 0; }
+    .box { border: 1px solid #000; padding: 8pt; }
+  </style>
+</head>
+<body>
+  <div class="center">
+    <div style="font-size: 12pt; margin-bottom: 26pt;">ВУЗ: ______________________________</div>
+    <div style="font-size: 12pt; margin-bottom: 6pt;">Дисциплина: ________________________</div>
+    <div style="font-size: 12pt; margin-bottom: 26pt;">Лабораторная работа № 8</div>
+    <div style="font-size: 13pt; font-weight: bold; margin-bottom: 8pt;">Беспроводные сети (WLAN) и безопасность</div>
+  </div>
+
+  <table class="kv">
+    <tr><td style="width: 55%;">Выполнил(а): ______________________</td><td>Группа: __________</td></tr>
+    <tr><td>Проверил(а): _______________________</td><td>Оценка: __________</td></tr>
+  </table>
+  <div class="right" style="margin-top: 36pt;">Дата: 14.03.2026</div>
+
+  <div class="pagebreak"></div>
+
+  <h1>Отчет по лабораторной работе № 8</h1>
+  <div class="muted">Тема: настройка WLAN, защита WPA2, MAC-фильтрация, DHCP Reservation, анализ последствий подмены MAC.</div>
+
+  <h2>Цель работы</h2>
+  <div>Изучить принципы работы беспроводных сетей и основные механизмы безопасности WLAN на примере настройки роутера и клиентов в Packet Tracer.</div>
+
+  <h2>Оборудование и ПО</h2>
+  <ul>
+    <li>Cisco Packet Tracer.</li>
+    <li>Сегмент «Филиал в Казани» с Wireless Router5 и клиентами <code>192.168.5.c</code> и <code>192.168.5.d</code>.</li>
+  </ul>
+
+  <h2>Ход работы</h2>
+  <h3>1) Настройка точки доступа и подключение клиента</h3>
+  <ol>
+    <li>На Wireless Router5 установлен SSID: <code>Filial5</code>.</li>
+    <li>Планшет <code>192.168.5.c</code> настроен на автоматическое подключение к SSID <code>Filial5</code> и получение IP по DHCP.</li>
+    <li>Проверена связность: ping шлюза <code>192.168.5.1</code>, открытие сайта <code>www.corp.ru</code>.</li>
+  </ol>
+
+  <h3>2) Анализ HTTP-пакетов</h3>
+  <ol>
+    <li>В режиме Simulation проанализированы HTTP-пакеты при открытии сайта <code>www.corp.ru</code> с планшета.</li>
+  </ol>
+
+  <h3>3) Параметры беспроводной сети</h3>
+  <ol>
+    <li>В Wireless Router5 изучен экран <code>Status → Wireless Network</code>; описаны параметры сети (SSID, режим, канал, подключенные клиенты).</li>
+  </ol>
+
+  <h3>4) Настройка защиты WLAN (WPA2)</h3>
+  <ol>
+    <li>Включен наиболее надежный вариант защиты: <code>WPA2 Personal</code> + <code>AES</code>.</li>
+    <li>Планшет переподключен к сети с учетом пароля; связь проверена.</li>
+  </ol>
+
+  <h3>5) MAC-фильтрация и DHCP Reservation</h3>
+  <ol>
+    <li>Включена MAC-фильтрация: разрешен доступ только устройствам из списка (внесен MAC планшета <code>192.168.5.c</code>).</li>
+    <li>Через <code>DHCP Reservation</code> для планшета закреплен постоянный адрес (например <code>192.168.5.120</code>).</li>
+    <li>Проверено надежное подключение и выдача зарезервированного IP.</li>
+  </ol>
+
+  <h3>6) Добавление нового устройства и попытка подключения (шаг 7)</h3>
+  <ol>
+    <li>Добавлено устройство <code>192.168.5.d</code>, настроено для подключения к <code>Filial5</code> (WPA2-PSK), но его MAC в список разрешенных не внесен.</li>
+    <li>Подтвержден отказ в подключении/выдаче DHCP из-за MAC-фильтра.</li>
+  </ol>
+
+  <h3>7) Подмена MAC-адреса и анализ (шаг 8)</h3>
+  <ol>
+    <li>У устройству <code>192.168.5.d</code> задан MAC-адрес, совпадающий с MAC планшета <code>192.168.5.c</code>.</li>
+    <li>Роутер перезагружен, на обоих устройствах открыт сайт <code>www.corp.ru</code>.</li>
+    <li>Проанализировано поведение сети и объяснены последствия подмены MAC.</li>
+  </ol>
+  <div class="box">
+    <b>Пояснение:</b>
+    <div>MAC-фильтрация проверяет только MAC-адрес, поэтому при подмене MAC злоумышленник может обойти ограничение.</div>
+    <div>Одинаковый MAC у двух устройств в одной WLAN приводит к некорректной идентификации клиента на L2, возможной нестабильности соединения и/или конфликтам адресации (например, при DHCP Reservation).</div>
+  </div>
+
+  <h2>Результаты</h2>
+  <ul>
+    <li>WLAN настроена, клиент <code>192.168.5.c</code> подключается по SSID <code>Filial5</code> и получает IP по DHCP.</li>
+    <li>Включена защита WPA2 Personal (AES), обеспечено подключение по паролю.</li>
+    <li>Включена MAC-фильтрация и настроено закрепление IP по MAC.</li>
+    <li>Показана возможность обхода MAC-фильтра при подмене MAC и описаны последствия.</li>
+  </ul>
+
+  <h2>Вывод</h2>
+  <div>В ходе работы выполнена настройка беспроводной сети и механизмов ее защиты (WPA2, MAC-фильтрация, DHCP Reservation). Показано, что MAC-фильтрация не является надежным механизмом безопасности и может быть обойдена подменой MAC-адреса.</div>
+
+  <h2>Приложение</h2>
+  <ul>
+    <li>Файл топологии Packet Tracer: <code>ЛР6.pkt</code></li>
+    <li>Путь: <code>C:\\Users\\adot4\\OneDrive\\Рабочий стол\\packet tracer\\ЛР6.pkt</code></li>
+    <li>Скриншоты (при необходимости): WPA2 настройки, MAC Filter список, DHCP Reservation, статус Wireless Network, подключение/отказ устройства <code>192.168.5.d</code>.</li>
+  </ul>
+</body>
+</html>
+

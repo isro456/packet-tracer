@@ -1,0 +1,102 @@
+﻿<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8" />
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+  <title>Отчет — Лабораторная работа № 7</title>
+  <style>
+    body { font-family: "Times New Roman", serif; font-size: 12pt; line-height: 1.35; }
+    h1 { font-size: 16pt; margin: 0 0 10pt; }
+    h2 { font-size: 14pt; margin: 14pt 0 6pt; }
+    h3 { font-size: 12.5pt; margin: 10pt 0 4pt; }
+    .muted { color: #555; }
+    .center { text-align: center; }
+    .right { text-align: right; }
+    .pagebreak { page-break-after: always; }
+    table { border-collapse: collapse; width: 100%; }
+    th, td { border: 1px solid #000; padding: 6pt 8pt; vertical-align: top; }
+    th { background: #f2f2f2; }
+    code { font-family: "Consolas", monospace; font-size: 11pt; }
+    .kv { width: 100%; margin: 0; }
+    .kv td { border: 0; padding: 2pt 0; }
+    .box { border: 1px solid #000; padding: 8pt; }
+  </style>
+</head>
+<body>
+  <div class="center">
+    <div style="font-size: 12pt; margin-bottom: 26pt;">ВУЗ: ______________________________</div>
+    <div style="font-size: 12pt; margin-bottom: 6pt;">Дисциплина: ________________________</div>
+    <div style="font-size: 12pt; margin-bottom: 26pt;">Лабораторная работа № 7</div>
+    <div style="font-size: 13pt; font-weight: bold; margin-bottom: 8pt;">Сервисы DNS/HTTP/FTP/E-mail и анализ PDU</div>
+  </div>
+
+  <table class="kv">
+    <tr><td style="width: 55%;">Выполнил(а): ______________________</td><td>Группа: __________</td></tr>
+    <tr><td>Проверил(а): _______________________</td><td>Оценка: __________</td></tr>
+  </table>
+  <div class="right" style="margin-top: 36pt;">Дата: 14.03.2026</div>
+
+  <div class="pagebreak"></div>
+
+  <h1>Отчет по лабораторной работе № 7</h1>
+  <div class="muted">Тема: взаимодействие клиент–сервер (DNS/HTTP/FTP), настройка почтового сервера (SMTP/POP3), анализ сетевых пакетов в Packet Tracer.</div>
+
+  <h2>Цель работы</h2>
+  <div>Настроить основные сетевые сервисы (DNS, HTTP, FTP, E-mail) в корпоративной сети и проанализировать передаваемые PDU.</div>
+
+  <h2>Оборудование и ПО</h2>
+  <ul>
+    <li>Cisco Packet Tracer.</li>
+    <li>Топология «Филиал в Казани» (WAN <code>200.200.200.0/24</code>, LAN <code>192.168.5.0/24</code>).</li>
+  </ul>
+
+  <h2>Ход работы</h2>
+  <h3>1) Сервис WWW и DNS</h3>
+  <ol>
+    <li>На сервере <code>200.200.200.230</code> включен HTTP.</li>
+    <li>На сервере включен DNS и создана A-запись: <code>www.corp.ru</code> → <code>200.200.200.230</code> (при необходимости также <code>mail.corp.ru</code> → <code>200.200.200.230</code>).</li>
+    <li>Клиенты <code>192.168.5.a</code>, <code>192.168.5.b</code>, <code>192.168.5.c</code> открывают сайт <code>http://www.corp.ru</code>.</li>
+  </ol>
+
+  <h3>2) FTP и анализ TCP-пакетов (шаг 8)</h3>
+  <ol>
+    <li>На сервере включен FTP и подготовлен файл для скачивания (пользователь/пароль заданы).</li>
+    <li>С клиента выполнено подключение к FTP-серверу, запрос справки (<code>help</code>/<code>?</code>), получение списка (<code>dir</code>) и файла (<code>get</code>).</li>
+    <li>В режиме Simulation выполнен анализ TCP-пакетов при работе FTP: 3-way handshake, обмен управляющими командами по порту 21 и передача данных.</li>
+  </ol>
+
+  <h3>3) Почтовый сервер (шаг 9–10)</h3>
+  <ol>
+    <li>На сервере <code>www.corp.ru</code> включен сервис E-mail и задано доменное имя (например <code>corp.ru</code>), создано несколько учетных записей пользователей.</li>
+    <li>На клиентах <code>192.168.5.a</code>, <code>192.168.5.b</code>, <code>192.168.5.c</code> настроены почтовые клиенты (SMTP/POP3) на соответствующие учетные записи.</li>
+    <li>Отправлены письма между клиентами; прием выполнен кнопкой <code>Receive</code>.</li>
+  </ol>
+
+  <h3>4) Анализ PDU по модели OSI (шаг 11)</h3>
+  <div class="box">
+    <div><b>DNS-запрос:</b> L7 DNS, L4 UDP/53, L3 IP, L2 Ethernet.</div>
+    <div><b>Запрос WWW:</b> L7 HTTP, L4 TCP/80, L3 IP, L2 Ethernet.</div>
+    <div><b>FTP получение файла:</b> L7 FTP, L4 TCP/21 (+ отдельное соединение данных), L3 IP, L2 Ethernet.</div>
+    <div><b>Отправка почты:</b> L7 SMTP, L4 TCP/25 (в PT), L3 IP, L2 Ethernet.</div>
+    <div><b>Получение почты:</b> L7 POP3, L4 TCP/110 (в PT), L3 IP, L2 Ethernet.</div>
+  </div>
+
+  <h2>Результаты</h2>
+  <ul>
+    <li>Сервисы DNS и HTTP настроены; домен <code>www.corp.ru</code> разрешается и сайт открывается с клиентов.</li>
+    <li>FTP-сервис работает; выполнен анализ TCP-пакетов при работе клиента с FTP-сервером.</li>
+    <li>Почтовый сервер настроен; клиенты отправляют и получают письма (SMTP/POP3).</li>
+  </ul>
+
+  <h2>Вывод</h2>
+  <div>В ходе работы выполнена настройка сервисов DNS/HTTP/FTP/E-mail и проведен анализ сетевого обмена данными по модели OSI для основных сценариев взаимодействия клиент–сервер.</div>
+
+  <h2>Приложение</h2>
+  <ul>
+    <li>Файл топологии Packet Tracer: <code>ЛР6.pkt</code></li>
+    <li>Путь: <code>C:\\Users\\adot4\\OneDrive\\Рабочий стол\\packet tracer\\ЛР6.pkt</code></li>
+    <li>Скриншоты (при необходимости): настройки DNS/HTTP/FTP/E-mail на сервере, отправка/прием почты, события Simulation.</li>
+  </ul>
+</body>
+</html>
+
